@@ -64,12 +64,19 @@ then
     fi
 elif [ -f /etc/debian_version ]
 then
-    OS='debian'
+    CHK=`cat /etc/debian_version`
+    if [ "$CHK" = 'jessie/sid' ]
+    then
+        OS='ubuntu-14.04'
+        echo "Ubuntu-14.04 が検出されました。"
+    else
+        OS='debian'
+        echo "Debian / Ubuntu が検出されました。"
+    fi
     APACHE_USER=www-data
     MYSQLD='/etc/init.d/mysql'
 #    TODO: -u -pを指定するとcreatedb.sqlの読み込みに失敗する
 #    MYSQL="$MYSQL -u root -p"
-    echo "Debian / Ubuntu が検出されました。"
     echo "インストールに失敗するかも知れませんが、お許しくださいm(__)m"
     echo ""
     echo "途中MySQLのパスワードを聞かれたら空のままエンターキーを押してください。"

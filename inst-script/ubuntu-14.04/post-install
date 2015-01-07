@@ -1,0 +1,29 @@
+#!/bin/bash
+
+if [ ! -f /etc/perl/Apache/Authn/Redmine.pm ]
+then
+  mkdir -p /etc/perl/Apache/Authn
+  cat  config/Redmine.pm |sed 's/Digest::SHA1/Digest::SHA/g' > /etc/perl/Apache/Authn/Redmine.pm
+fi
+
+if [ ! -f /etc/apache2/sites-available/redmine ]
+then
+  PASSENGER_VERSION=`passenger-config  --version`
+
+  sed 's/%HOSTNAME%/'$HOSTNAME'/' inst-script/debian/httpd-redmine.conf |\
+    sed 's/%PASSENGER_VERSION%/'$PASSENGER_VERSION'/' > /etc/apache2/sites-available/redmine
+  sed 's/%HOSTNAME%/'$HOSTNAME'/' inst-script/debian/httpd-vcs.conf > /etc/apache2/sites-available/vcs
+fi
+
+a2enmod expires
+a2enmod dav_fs
+a2enmod auth_mysql
+a2enmod authz_svn
+a2enmod proxy_http
+a2enmod headers
+a2enmod rewrite
+a2ensite redmine
+a2ensite vcs
+
+service apache2 stop
+service apache2 start
