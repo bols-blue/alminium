@@ -51,5 +51,12 @@ case $OS in
             passenger-install-apache2-module --auto
         fi
         ;;
-
+    ubuntu-14.04)
+        if [ ! -f /var/lib/gems/2.0.0/gems/passenger-4.0.*/buildout/apache2/mod_passenger.so ]
+        then
+            $GEM install thin
+            $GEM install passenger --no-rdoc --no-ri
+            passenger-install-apache2-module --auto
+        fi
+        ;;
 esac
