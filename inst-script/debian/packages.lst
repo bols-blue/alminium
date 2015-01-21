@@ -7,8 +7,7 @@ mercurial
 mysql-client
 mysql-server
 ruby1.9.3
-libmagickcore-dev
-libmagickwand-dev
+imagemagick
 #rubygems
 #librmagick-ruby1.8
 #rake
